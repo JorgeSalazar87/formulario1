@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario 1</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .container {
+      margin-top: 50px;
+    }
+    .category-item {
+      display: flex;
+      align-items: center;
+    }
+    .category-item .category-name {
+      margin-right: 10px;
+    }
+    .category-item .delete-button {
+      cursor: pointer;
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Listado de prendas de vestir</h2>
+    
+    <div class="form-group">
+      <label for="category">Elemento a agregar:</label>
+      <input type="text" class="form-control" id="category">
+    </div>
+    
+    <button type="button" class="btn btn-primary" id="addButton">AGREGAR</button>
+    
+    <h3>Listado de Prendas a comprar</h3>
+    <ul id="categoryList"></ul>
+  </div>
+
+  <script>
+    var categories = [];
+    
+    var categoryInput = document.getElementById("category");
+    var categoryList = document.getElementById("categoryList");
+    var addButton = document.getElementById("addButton");
+    
+    addButton.addEventListener("click", function() {
+      var category = categoryInput.value.trim();
+      
+      if (category !== "") {
+        categories.push(category);
+        
+        categoryInput.value = "";
+        
+        displayCategories();
+      }
+    });
+    
+    function displayCategories() {
+      categoryList.innerHTML = "";
+      
+      for (var i = 0; i < categories.length; i++) {
+        var listItem = document.createElement("li");
+        listItem.classList.add("category-item");
+        
+        var categoryItem = document.createElement("span");
+        categoryItem.classList.add("category-name");
+        categoryItem.innerHTML = categories[i];
+        
+        var deleteButton = document.createElement("span");
+        deleteButton.classList.add("delete-button");
+        deleteButton.innerHTML = "X";
+        
+        deleteButton.addEventListener("click", createDeleteHandler(i));
+        
+        listItem.appendChild(categoryItem);
+        listItem.appendChild(deleteButton);
+        
+        categoryList.appendChild(listItem);
+      }
+    }
+    
+    function createDeleteHandler(index) {
+      return function() {
+        categories.splice(index, 1); 
+        displayCategories(); 
+      };
+    }
+  </script>
+</body>
+</html>
+
